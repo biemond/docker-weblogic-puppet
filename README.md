@@ -37,16 +37,3 @@ docker run -i -t -p 7001:7001 -p 8001:8001 -p 5556:5556 oracle/weblogic1213_cent
 - start /opt/scripts/wls/startNodeManager.sh
 - start /opt/scripts/wls/startWeblogicAdmin.sh
 
-for i in {7001..7002}; do
-VBoxManage modifyvm "boot2docker-vm" --natpf1 "tcp-port$i,tcp,,$i,,$i";
-VBoxManage modifyvm "boot2docker-vm" --natpf1 "udp-port$i,udp,,$i,,$i";
-done
-
-for i in {7001..7002}; do
-VBoxManage modifyvm "boot2docker-vm" --natpf1 delete "tcp-port$i";
-VBoxManage modifyvm "boot2docker-vm" --natpf1 delete "udp-port$i";
-done
-
-VBoxManage controlvm boot2docker-vm natpf1 "weblogic-admin,tcp,127.0.0.1,7001,,7001"
-VBoxManage controlvm boot2docker-vm natpf1 "weblogic-admin2,tcp,192.168.59.103,7001,127.0.0.1,7001"
-
