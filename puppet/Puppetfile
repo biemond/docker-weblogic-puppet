@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+forge "https://forgeapi.puppetlabs.com"
+
+
+# modules from the Puppet Forge
+mod 'biemond/jdk7'
+mod 'biemond/orautils'
+mod 'adrien/filemapper'
+mod 'reidmv/yamlfile'
+mod 'hajee/easy_type'
+mod 'biemond/orawls'
+
