@@ -35,3 +35,15 @@ with bash
 docker run -i -t -p 7001:7001 -p 8001:8001 -p 5556:5556 oracle/weblogic1213_centos7:latest /bin/bash
 - start /startWls.sh
 
+## Boot2docker, MAC OSX
+
+VirtualBox forward rules
+- VBoxManage controlvm boot2docker-vm natpf1 "weblogic-admin,tcp,,7001,,7001"
+- VBoxManage controlvm boot2docker-vm natpf1 "weblogic-wls,tcp,,8001,,8001"
+- VBoxManage controlvm boot2docker-vm natpf1 "weblogic-ndmgr,tcp,,5556,,5556"
+
+Check the ipaddress
+- boot2docker ip
+
+Check Weblogic console
+- curl http://x.x.x.x:7001/console
