@@ -85,7 +85,8 @@ orautils::wlsAdminServerParam:    *domain_adminserver
 domain_instances:
   'Wls1213':
     domain_template:                       "standard"
-    development_mode:                      false
+    development_mode:                      true
+    adminserver_listen_on_all_interfaces:  true
     log_output:                            *logoutput
 
 wls_setting_instances:
@@ -191,7 +192,7 @@ server_instances:
            - *server_vm_args_max_memory
            - '-Dweblogic.Stdout=/var/log/weblogic/wlsServer1.out'
            - '-Dweblogic.Stderr=/var/log/weblogic/wlsServer1_err.out'
-    listenaddress:                         '127.0.0.1'
+    # listenaddress:                         '127.0.0.1'
     listenport:                            '8001'
     logfilename:                           '/var/log/weblogic/wlsServer1.log'
     machine:                               'Node1'
