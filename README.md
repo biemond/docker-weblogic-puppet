@@ -27,13 +27,13 @@ docker rmi oracle/weblogic1213_centos7
 
 ## Start container
 
-default, it will do port forwarding of 7001,8001,5556 and start the nodemanager & adminserver
+default, will start the nodemanager & adminserver
 
-docker run -i -t -P oracle/weblogic1213_centos7:latest
+docker run -i -t -p 7001:7001 -p 8001:8001 -p 5556:5556 oracle/weblogic1213_centos7:latest /startWls.sh
+docker run -i -t -p 7001:7001 -p 8001:8001 -p 5556:5556 oracle/weblogic1213_centos7:latest /bin/bash
 
 with bash
 
 docker run -i -t -p 7001:7001 -p 8001:8001 -p 5556:5556 oracle/weblogic1213_centos7:latest /bin/bash
-- start /opt/scripts/wls/startNodeManager.sh
-- start /opt/scripts/wls/startWeblogicAdmin.sh
+- start /startWls.sh
 
