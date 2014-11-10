@@ -46,4 +46,4 @@ EXPOSE 5556 7001 8001
 ADD startWls.sh /
 RUN chmod 0755 /startWls.sh
 
-CMD ["/startWls.sh"]
+CMD bash -C '/startWls.sh';'bash'
