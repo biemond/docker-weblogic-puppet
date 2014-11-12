@@ -46,4 +46,13 @@ EXPOSE 5556 7001 8001
 ADD startWls.sh /
 RUN chmod 0755 /startWls.sh
 
+
+WORKDIR /
+
+# cleanup
+RUN rm -rf /software/*
+RUN rm -rf /var/tmp/install/*
+RUN rm -rf /var/tmp/*
+RUN rm -rf /tmp/*
+
 CMD bash -C '/startWls.sh';'bash'

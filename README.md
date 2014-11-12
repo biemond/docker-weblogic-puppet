@@ -19,14 +19,12 @@ Download the following software from Oracle and Agree to the license
 
 Add them to this docker folder
 
-## Build image
+## Build image (~3.1GB)
 docker build -t oracle/weblogic1213_centos7 .
 
-## Remove image
-docker rmi oracle/weblogic1213_centos7
+probably you want to compress it, go to the Compress section
 
 ## Start container
-
 default, will start the nodemanager & adminserver
 - docker run -i -t -p 7001:7001 -p 8001:8001 -p 5556:5556 oracle/weblogic1213_centos7:latest
 
@@ -34,6 +32,16 @@ with bash
 
 docker run -i -t -p 7001:7001 -p 8001:8001 -p 5556:5556 oracle/weblogic1213_centos7:latest /bin/bash
 - start /startWls.sh
+
+## Compress image (now ~1.8GB)
+- ID=$(docker run -d oracle/weblogic1213_centos7:latest /bin/bash)
+- docker export $ID > weblogic1213_centos7.tar
+- cat weblogic1213_centos7.tar | docker import - weblogic1213_centos7
+- docker run -i -t -p 7001:7001 -p 8001:8001 -p 5556:5556 weblogic1213_centos7:latest /bin/bash
+- /startWls.sh
+
+## Remove image
+docker rmi oracle/weblogic1213_centos7
 
 ## Boot2docker, MAC OSX
 
