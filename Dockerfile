@@ -1,22 +1,21 @@
 FROM centos:centos7
 
-# Need to enable centosplus for the image libselinux issue
-RUN yum install -y yum-utils
-RUN yum-config-manager --enable centosplus
+# Do this to enable Oracle Linux
+# wget http://public-yum.oracle.com/docker-images/OracleLinux/OL7/oraclelinux-7.0.tar.xz
+# docker load -i oraclelinux-7.0.tar.xz
+# FROM oraclelinux:7.0
 
-RUN yum -y install hostname.x86_64 rubygems ruby-devel gcc git
+RUN yum -y install hostname.x86_64 rubygems ruby-devel gcc
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
-#RUN yum group install "Base"
-#RUN yum group install "Development Tools"
 
 RUN rpm --import https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs && \
-    rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
+    rpm -ivh http://yum.puppetlabs.com/el/7/products/x86_64/puppetlabs-release-7-10.noarch.rpm
 
 # configure & install puppet
-RUN yum install -y puppet tar
+RUN yum install -y --skip-broken puppet tar
 RUN gem install puppet librarian-puppet
 
-RUN yum -y install httpd; yum clean all
+RUN yum clean all
 
 ADD puppet/Puppetfile /etc/puppet/
 ADD puppet/manifests/site.pp /etc/puppet/
@@ -38,15 +37,6 @@ COPY fmw_12.1.3.0.0_wls.jar /var/tmp/install/
 
 RUN puppet apply /etc/puppet/site.pp --verbose --detailed-exitcodes || [ $? -eq 2 ]
 
-CMD /opt/scripts/wls/stopWeblogicAdmin.sh
-CMD /opt/scripts/wls/stopNodeManager.sh
-
-EXPOSE 5556 7001 8001
-
-ADD startWls.sh /
-RUN chmod 0755 /startWls.sh
-
-
 WORKDIR /
 
 # cleanup
@@ -54,5 +44,10 @@ RUN rm -rf /software/*
 RUN rm -rf /var/tmp/install/*
 RUN rm -rf /var/tmp/*
 RUN rm -rf /tmp/*
+
+EXPOSE 5556 7001 8001
+
+ADD startWls.sh /
+RUN chmod 0755 /startWls.sh
 
 CMD bash -C '/startWls.sh';'bash'
