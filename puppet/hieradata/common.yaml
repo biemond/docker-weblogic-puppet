@@ -40,9 +40,9 @@ orawls::weblogic::remote_file:          false
 orawls::weblogic::wls_domains_dir:      *wls_domains_dir
 orawls::weblogic::wls_apps_dir:         *wls_apps_dir
 
-fmw_installations:
+#fmw_installations:
 
-opatch_instances:
+#opatch_instances:
 
 
 # handy WebLogic scripts in /opt/scripts/wls

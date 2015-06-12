@@ -5,15 +5,15 @@ FROM centos:centos7
 # docker load -i oraclelinux-7.0.tar.xz
 # FROM oraclelinux:7.0
 
-RUN yum -y install hostname.x86_64 rubygems ruby-devel gcc
+RUN yum -y install hostname.x86_64 rubygems ruby-devel gcc git
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 
 RUN rpm --import https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs && \
-    rpm -ivh http://yum.puppetlabs.com/el/7/products/x86_64/puppetlabs-release-7-10.noarch.rpm
+    rpm -ivh http://yum.puppetlabs.com/el/7/products/x86_64/puppetlabs-release-7-11.noarch.rpm
 
 # configure & install puppet
 RUN yum install -y --skip-broken puppet tar
-RUN gem install puppet librarian-puppet
+RUN gem install librarian-puppet
 
 RUN yum clean all
 
@@ -23,7 +23,8 @@ ADD puppet/hiera.yaml /etc/puppet/
 ADD puppet/hieradata/common.yaml /etc/puppet/
 
 WORKDIR /etc/puppet/
-RUN librarian-puppet install
+RUN librarian-puppet install --verbose
+RUN librarian-puppet show
 
 # upload software
 RUN mkdir /var/tmp/install
@@ -35,7 +36,7 @@ RUN chmod 777 /software
 COPY jdk-7u55-linux-x64.tar.gz /software/
 COPY fmw_12.1.3.0.0_wls.jar /var/tmp/install/
 
-RUN puppet apply /etc/puppet/site.pp --verbose --detailed-exitcodes || [ $? -eq 2 ]
+RUN puppet apply /etc/puppet/site.pp --verbose --trace --modulepath /etc/puppet/modules --hiera_config /etc/puppet/hiera.yaml --detailed-exitcodes || [ $? -eq 2 ]
 
 WORKDIR /
 
