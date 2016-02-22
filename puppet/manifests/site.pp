@@ -40,22 +40,10 @@ class os {
     require    => Group['dba'],
   }
 
-  $install = [ 'binutils.x86_64','unzip.x86_64']
-
-  package { $install:
-    ensure  => present,
-  }
-
 }
 
 class java {
   require os
-
-  $remove = [ "java-1.7.0-openjdk.x86_64", "java-1.6.0-openjdk.x86_64" ]
-
-  package { $remove:
-    ensure  => absent,
-  }
 
   include jdk7
 

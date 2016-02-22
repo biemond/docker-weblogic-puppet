@@ -19,7 +19,7 @@ Download the following software from Oracle and Agree to the license
 
 Add them to this docker folder
 
-### Build image (~3.1GB)
+### Build image (~2.6GB)
 docker build -t oracle/weblogic1213 .
 
 probably you want to compress it, just go to the Compress section for more information
