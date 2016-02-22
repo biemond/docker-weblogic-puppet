@@ -29,15 +29,14 @@ RUN mkdir /var/tmp/install && \
 COPY jdk-7u55-linux-x64.tar.gz /software/
 COPY fmw_12.1.3.0.0_wls.jar /var/tmp/install/
 
-RUN puppet apply /etc/puppet/site.pp --verbose --trace --modulepath /etc/puppet/modules --hiera_config /etc/puppet/hiera.yaml --detailed-exitcodes || [ $? -eq 2 ]
-
-WORKDIR /
-
-# cleanup
-RUN rm -rf /software/* && \
+RUN puppet apply /etc/puppet/site.pp --verbose --trace --modulepath /etc/puppet/modules --hiera_config /etc/puppet/hiera.yaml --detailed-exitcodes || [ $? -eq 2 ] && \
+    rm -rf /software/* && \
     rm -rf /var/tmp/install/* && \
     rm -rf /var/tmp/* && \
     rm -rf /tmp/*
+
+WORKDIR /
+
 
 EXPOSE 5556 7001 8001
 
