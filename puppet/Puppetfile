@@ -3,12 +3,12 @@
 
 forge "https://forgeapi.puppetlabs.com"
 
-
 # modules from the Puppet Forge
 mod 'biemond/jdk7'
 mod 'biemond/orautils'
+mod 'biemond/orawls'
 mod 'adrien/filemapper'
 mod 'reidmv/yamlfile'
 mod 'hajee/easy_type'
-mod 'biemond/orawls'
-
+mod 'fiddyspence/sleep'
+mod 'puppetlabs/stdlib'

@@ -1,6 +1,6 @@
 ---
 
-logoutput:                &logoutput                true
+logoutput:                      &logoutput                true
 orawls::weblogic::log_output:   *logoutput
 
 # global WebLogic vars
@@ -46,21 +46,20 @@ orawls::weblogic::wls_apps_dir:         *wls_apps_dir
 
 
 # handy WebLogic scripts in /opt/scripts/wls
-orautils::osOracleHomeParam:      *wls_oracle_base_home_dir
-orautils::oraInventoryParam:      "/opt/oracle/oraInventory"
-orautils::osDomainTypeParam:      "admin"
-orautils::osLogFolderParam:       *wls_log_dir
-orautils::osDownloadFolderParam:  *wls_download_dir
-orautils::osMdwHomeParam:         *wls_middleware_home_dir
-orautils::osWlHomeParam:          *wls_weblogic_home_dir
-orautils::oraUserParam:           *wls_os_user
-orautils::oraGroupParam:          *wls_os_group
+orautils::os_oracle_home:      *wls_oracle_base_home_dir
+orautils::ora_inventory:       "/opt/oracle/oraInventory"
+orautils::os_domain_type:      "admin"
+orautils::os_log_folder:       *wls_log_dir
+orautils::os_download_folder:  *wls_download_dir
+orautils::os_mdw_home:         *wls_middleware_home_dir
+orautils::os_wl_home:          *wls_weblogic_home_dir
+orautils::ora_user:            *wls_os_user
+orautils::ora_group:           *wls_os_group
 
-orautils::nodeMgrPortParam:       5556
+orautils::node_mgr_port:       5556
 
-orautils::wlsUserParam:           *wls_weblogic_user
-orautils::jsseEnabledParam:       true
-
+orautils::wls_user:           *wls_weblogic_user
+orautils::jsse_enabled:       true
 
 
 # when you have just one domain on a server
@@ -73,13 +72,12 @@ domain_wls_password:        &domain_wls_password        "weblogic1"
 domain_user_config_file:    "/home/oracle/oracle-Wls1213-WebLogicConfig.properties"
 domain_user_key_file:       "/home/oracle/oracle-Wls1213-WebLogicKey.properties"
 
-orautils::osDomainParam:          *domain_name
-orautils::osDomainPathParam:      "/opt/oracle/wlsdomains/domains/Wls1213"
-orautils::nodeMgrPathParam:       "/opt/oracle/wlsdomains/domains/Wls1213/bin"
-orautils::nodeMgrAddressParam:    *domain_adminserver_address
-orautils::wlsPasswordParam:       *domain_wls_password
-orautils::wlsAdminServerParam:    *domain_adminserver
-
+orautils::os_domain:           *domain_name
+orautils::os_domain_path:      "/opt/oracle/wlsdomains/domains/Wls1213"
+orautils::node_mgr_path:       "/opt/oracle/wlsdomains/domains/Wls1213/bin"
+orautils::node_mgr_address:    *domain_adminserver_address
+orautils::wls_password:        *domain_wls_password
+orautils::wls_adminserver:     *domain_adminserver
 
 # create a standard domain with custom identity for the adminserver
 domain_instances:
