@@ -17,26 +17,33 @@ Download the following software from Oracle and Agree to the license
 - jdk-7u55-linux-x64.tar.gz
 - fmw_12.1.3.0.0_wls.jar
 
-Add them to this docker folder
+Add them to this src/main/docker/wls directory
 
 ### Build image (~2.6GB)
-docker build -t oracle/weblogic1213 .
+- cd src/main/docker/wls
+- docker build -t oracle/weblogic1213 .
+
+or with maven
+- mvn package, build image
+- mvn verify, local bring up, test and destroy
+- mvn install, bring up
+
 
 probably you want to compress it, just go to the Compress section for more information
 
 ### Start container
 default, it will start the Nodemanager & the AdminServer
-- docker run -i -t -p 7001:7001 -p 8001:8001 -p 5556:5556 oracle/weblogic1213:latest
+- docker run -i -t -p 7001:7001 -p 8101:8101 -p 5556:5556 oracle/weblogic1213:latest
 
 with bash
 
-docker run -i -t -p 7001:7001 -p 8001:8001 -p 5556:5556 oracle/weblogic1213:latest /bin/bash
+docker run -i -t -p 7001:7001 -p 8101:8101 -p 5556:5556 oracle/weblogic1213:latest /bin/bash
 - start /startWls.sh
 
 ### Compress image (now ~1.8GB)
 - ID=$(docker run -d oracle/weblogic1213:latest /bin/bash)
 - docker export $ID > weblogic1213.tar
 - cat weblogic1213.tar | docker import - weblogic1213
-- docker run -i -t -p 7001:7001 -p 8001:8001 -p 5556:5556 weblogic1213:latest /bin/bash
+- docker run -i -t -p 7001:7001 -p 8101:8101 -p 5556:5556 weblogic1213:latest /bin/bash
 - /startWls.sh
 
