@@ -47,3 +47,22 @@ docker run -i -t -p 7001:7001 -p 8101:8101 -p 5556:5556 oracle/weblogic1213:late
 - docker run -i -t -p 7001:7001 -p 8101:8101 -p 5556:5556 weblogic1213:latest /bin/bash
 - /startWls.sh
 
+### fusion
+
+- docker-machine create --driver vmwarefusion --vmwarefusion-disk-size 40960 vm
+
+- docker-machine ip {{ your machine name }}
+- /Library/Preferences/VMware\ Fusion/vmnet8/nat.conf
+
+Find the section:
+```
+[incomingtcp]
+# Use these with care - anyone can enter into your VM through these...
+# The format and example are as follows:
+#<external port number> = <VM's IP address>:<VM's port number>
+80 = {{ your machine ip }}:80
+```
+Now run the following:
+
+- sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli --stop
+- sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli --start
