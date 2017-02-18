@@ -1,8 +1,16 @@
 ---
-:backends: yaml
-:yaml:
-  :datadir: /etc/puppet
-:hierarchy:
-  - "%{::fqdn}"
-  - "%{::environment}"
-  - common
+version: 5
+
+defaults:
+  datadir: /etc/puppetlabs
+  data_hash: yaml_data
+
+hierarchy:
+  - name: "Nodes"
+    path: "nodes/%{trusted.certname}.yaml"
+
+  - name: "environment defaults"
+    path: "environment.yaml"
+
+  - name: "Common defaults"
+    path: "common.yaml"

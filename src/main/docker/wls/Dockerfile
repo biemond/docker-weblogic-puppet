@@ -1,21 +1,22 @@
 FROM oraclelinux:7
 
-RUN rpm --import https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs && \
-    rpm -ivh http://yum.puppetlabs.com/el/7/products/x86_64/puppetlabs-release-7-11.noarch.rpm && \
-    yum -y install hostname.x86_64 rubygems ruby-devel gcc git binutils.x86_64 unzip.x86_64 && \
+RUN yum -y install hostname.x86_64 wget git binutils.x86_64 unzip.x86_64 net-tools && \
+    wget --output-document=/tmp/puppetlabs-release-pc1-el-7.noarch.rpm https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm  && \
+    rpm -i /tmp/puppetlabs-release-pc1-el-7.noarch.rpm  && \
     echo "gem: --no-ri --no-rdoc" > ~/.gemrc && \
     yum install -y --skip-broken puppet tar && \
-    gem install librarian-puppet && \
+    /opt/puppetlabs/puppet/bin/gem install librarian-puppet && \
     yum clean all
 
-ADD puppet/Puppetfile /etc/puppet/
-ADD puppet/manifests/site.pp /etc/puppet/
-ADD puppet/hiera.yaml /etc/puppet/
-ADD puppet/hieradata/common.yaml /etc/puppet/
+ADD puppet/Puppetfile /etc/puppetlabs/
+ADD puppet/manifests/site.pp /etc/puppetlabs/code/manifests/
+ADD puppet/hiera.yaml /etc/puppetlabs/
+ADD puppet/hieradata/common.yaml /etc/puppetlabs/
 
-WORKDIR /etc/puppet/
+WORKDIR /etc/puppetlabs/
 
-RUN librarian-puppet install --verbose && \
+RUN export PATH=$PATH:/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin && \
+    LIBRARIAN_PUPPET_PATH=code/modules librarian-puppet install --verbose && \
     librarian-puppet show
 
 # upload software
@@ -24,10 +25,10 @@ RUN mkdir /var/tmp/install && \
     mkdir /software && \
     chmod 777 /software
 
-COPY jdk-7u55-linux-x64.tar.gz /software/
-COPY fmw_12.1.3.0.0_wls.jar /var/tmp/install/
+COPY jdk-8u111-linux-x64.tar.gz /software/
+COPY fmw_12.2.1.2.0_wls.jar /var/tmp/install/
 
-RUN puppet apply /etc/puppet/site.pp --verbose --trace --modulepath /etc/puppet/modules --hiera_config /etc/puppet/hiera.yaml --detailed-exitcodes || [ $? -eq 2 ] && \
+RUN /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/manifests/site.pp --verbose --trace --hiera_config /etc/puppetlabs/hiera.yaml --detailed-exitcodes || [ $? -eq 2 ] && \
     rm -rf /software/* && \
     rm -rf /var/tmp/install/* && \
     rm -rf /var/tmp/* && \
